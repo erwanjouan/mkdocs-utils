@@ -22,8 +22,7 @@ def define_env(env):
 
     @env.macro
     def copy_url_login_mdp(input_category, input_key):
-        return f"""
-            <a href=\"#\" onclick=\"openPage(event, \'{input_category}\', \'{input_key}\',\'url\')\">{input_key}</a>
+        return '''<a href=\"#\" onclick=\"openPage(event, \'{input_category}\', \'{input_key}\',\'url\')\">{input_key}</a>
              ( <a onclick="copySecret(\'{input_category}\', \'{input_key}\', \'login\', this)">login</a>
              : <a onclick="copySecret(\'{input_category}\', \'{input_key}\', \'password\', this)">password</a> )
-             """
+             '''.format(input_category=input_category, input_key=input_key)
