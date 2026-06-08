@@ -1,0 +1,7 @@
+mkdocs
+mkdocs-material
+mdx_truly_sane_lists
+mkdocs-video
+markdown-exec[ansi]
+mkdocs-macros-plugin
+python-pptx
