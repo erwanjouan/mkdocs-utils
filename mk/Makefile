@@ -8,11 +8,7 @@ activate:
 	source $(BIN_FOLDER)/activate
 
 install: activate
-	$(BIN_FOLDER)/python3 -m pip install -r mkdocs-macros/requirements.txt && \
-	mkdir -p docs/_utils && \
-	curl -q https://raw.githubusercontent.com/erwanjouan/mkdocs-utils/refs/heads/main/js/secrets.js > docs/_utils/secrets.js  && \
-	curl -q https://raw.githubusercontent.com/erwanjouan/mkdocs-utils/refs/heads/main/js/mermaid.min.js > docs/_utils/mermaid.min.js && \
-	curl -q https://raw.githubusercontent.com/erwanjouan/mkdocs-utils/refs/heads/main/py/macros.py > docs/_utils/macros.py
+	$(BIN_FOLDER)/python3 -m pip install -r ./docs/_utils/py/requirements.txt
 
 init: install
 	$(BIN_FOLDER)/python3 -m mkdocs new .

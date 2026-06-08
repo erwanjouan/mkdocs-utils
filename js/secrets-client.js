@@ -21,7 +21,7 @@ async function copySecret(category, name, property, buttonEl) {
         }
         setLabel("copied ✔");
     } catch (err) {
-        alert(`CopySecret failed: ${err.message}`);
+        alert(`[secrets] copySecret failed: ${err.message}`);
         console.error("[secrets] copySecret failed:", err.message);
         setLabel("Error");
     }
@@ -44,7 +44,7 @@ async function openPage(event, category, name, property) {
             window.open(url, '_blank');
         }
     } catch (err) {
-        alert(`OpenPage failed: ${err.message}`);
+        alert(`[secrets] openPage failed: ${err.message}`);
         console.error("[secrets] openPage failed:", err.message);
     }
 }
