@@ -50,16 +50,16 @@ async function openPage(event, category, name, property) {
 }
 
 // TODO : refactor
-async function getValue(category, name, property, anchor) {
+async function getValue(category, name, property, htmlElt) {
     try {
         value = await getSecret(category, name, property)
-        if (value) {
-            anchor.textContent = value
+        if (value && htmlElt) {
+            htmlElt.textContent = value
             await copySecret(category, name, property, null)
         }
     } catch (err) {
-        alert(`[coffre-fort] openPage failed: ${err.message}`);
-        console.error("[secrets] openPage failed:", err.message);
+        alert(`[coffre-fort] getValue failed: ${err.message}`);
+        console.error("[secrets] getValue failed:", err.message);
     }
 }
 
