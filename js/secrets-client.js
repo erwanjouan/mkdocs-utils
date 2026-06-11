@@ -1,4 +1,4 @@
-const SECRETS_API = "http://127.0.0.1:3000";
+const SECRETS_API = "http://127.0.0.1:9371";
 
 // key: dot-separated path into the secrets YAML (e.g. "tech-notes.awsaccount2user.mot de passe")
 async function copySecret(category, name, property, buttonEl) {
@@ -21,7 +21,7 @@ async function copySecret(category, name, property, buttonEl) {
         }
         setLabel("copied ✔");
     } catch (err) {
-        alert(`[secrets] copySecret failed: ${err.message}`);
+        alert(`[coffre-fort] copySecret failed: ${err.message}`);
         console.error("[secrets] copySecret failed:", err.message);
         setLabel("Error");
     }
@@ -44,7 +44,7 @@ async function openPage(event, category, name, property) {
             window.open(url, '_blank');
         }
     } catch (err) {
-        alert(`[secrets] openPage failed: ${err.message}`);
+        alert(`[coffre-fort] openPage failed: ${err.message}`);
         console.error("[secrets] openPage failed:", err.message);
     }
 }
