@@ -26,3 +26,8 @@ def define_env(env):
              ( <a onclick="copySecret(\'{input_category}\', \'{input_key}\', \'login\', this)">login</a>
              : <a onclick="copySecret(\'{input_category}\', \'{input_key}\', \'password\', this)">password</a> )
              '''.format(input_category=input_category, input_key=input_key)
+
+    @env.macro
+    def copy_clear_text(input_category, input_name, input_property):
+        return ('<a onclick="getValue(\'{input_category}\', \'{input_name}\', \'{input_property}\', this)">get</a>'
+                .format(input_category=input_category, input_name=input_name, input_property=input_property))

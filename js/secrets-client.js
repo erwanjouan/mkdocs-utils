@@ -49,6 +49,20 @@ async function openPage(event, category, name, property) {
     }
 }
 
+// TODO : refactor
+async function getValue(category, name, property, anchor) {
+    try {
+        value = await getSecret(category, name, property)
+        if (value) {
+            anchor.textContent = value
+            await copySecret(category, name, property, null)
+        }
+    } catch (err) {
+        alert(`[coffre-fort] openPage failed: ${err.message}`);
+        console.error("[secrets] openPage failed:", err.message);
+    }
+}
+
 function getParams(category, name, property) {
     const categoryParam = `category=${encodeURIComponent(category)}`
     const keyParam = `name=${encodeURIComponent(name)}`
