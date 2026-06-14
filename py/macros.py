@@ -38,7 +38,10 @@ def define_env(env):
             "getAndCopySecret('{cat}', '{key}', '{prop}')"
             ".then(v => {{"
             "document.getElementById('secret-label-{uid}').textContent = v;"
-            "document.getElementById('secret-btn-{uid}').disabled = true;"
+            "document.getElementById('secret-btn-{uid}').hidden = true;"
+            "}})"
+            ".catch(() => {{"
+            "document.getElementById('secret-btn-{uid}').classList.add('md-button--secondary');"
             "}})"
         ).format(cat=input_category, key=input_key, prop=input_property, uid=uid)
         icon = (
@@ -49,6 +52,6 @@ def define_env(env):
             '</svg>'
         )
         return (
-            '<span id="secret-label-{uid}">******</span>'
-            ' <button id="secret-btn-{uid}" onclick="{js}">{icon}</button>'
+            '<span id="secret-label-{uid}"></span>'
+            ' <button class="md-button" id="secret-btn-{uid}" onclick="{js}"><p>{icon}</p></button>'
         ).format(uid=uid, js=js, icon=icon)
