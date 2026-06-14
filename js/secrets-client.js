@@ -1,17 +1,30 @@
 const SECRETS_API = "http://127.0.0.1:9371";
 
+function _showToast(message) {
+    const toast = document.createElement("div");
+    toast.textContent = message;
+    Object.assign(toast.style, {
+        position: "fixed",
+        bottom: "1.5rem",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "#323232",
+        color: "#fff",
+        padding: "0.5rem 1.2rem",
+        borderRadius: "4px",
+        fontSize: "0.875rem",
+        opacity: "1",
+        transition: "opacity 0.4s ease",
+        zIndex: "9999",
+        pointerEvents: "none",
+    });
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = "0"; }, 1800);
+    setTimeout(() => { toast.remove(); }, 2200);
+}
+
 // key: dot-separated path into the secrets YAML (e.g. "tech-notes.awsaccount2user.mot de passe")
 async function copySecret(category, name, property, buttonEl) {
-    const original = buttonEl ? buttonEl.textContent : null;
-    const setLabel = (label) => {
-        if (buttonEl) {
-            buttonEl.textContent = label;
-            setTimeout(() => {
-                buttonEl.textContent = original;
-            }, 2000);
-        }
-    };
-
     try {
         const url = `${SECRETS_API}/api/copy?${getParams(category, name, property)}`;
         const res = await fetch(url);
@@ -19,27 +32,27 @@ async function copySecret(category, name, property, buttonEl) {
             const body = await res.json().catch(() => ({}));
             throw new Error(body.error || `HTTP ${res.status}`);
         }
-        setLabel("copied ✔");
+        _showToast("Copied ✔");
     } catch (err) {
         alert(`[coffre-fort] copySecret failed: ${err.message}`);
         console.error("[secrets] copySecret failed:", err.message);
-        setLabel("Error");
     }
 }
 
-// Returns the value at the given dot-separated key, or throws on error.
-async function getSecret(category, name, property) {
+// Returns the value at the given dot-separated key, copies it to clipboard, or throws on error.
+async function getAndCopySecret(category, name, property) {
     const url = `${SECRETS_API}/api/get?${getParams(category, name, property)}`;
     const res = await fetch(url);
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+    _showToast("Copied ✔");
     return body.value;
 }
 
 async function openPage(event, category, name, property) {
     event.preventDefault();
     try {
-        url = await getSecret(category, name, property)
+        url = await getAndCopySecret(category, name, property)
         if (url) {
             window.open(url, '_blank');
         }
