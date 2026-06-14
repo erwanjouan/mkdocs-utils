@@ -35,15 +35,11 @@ def define_env(env):
             input_property.replace(' ', '_'),
         )
         js = (
-            "getAndCopySecret('{cat}', '{key}', '{prop}')"
-            ".then(v => {{"
-            "document.getElementById('secret-label-{uid}').textContent = v;"
-            "document.getElementById('secret-btn-{uid}').hidden = true;"
-            "}})"
+            "getAndCopySecret('{cat}', '{key}', '{prop}', this)"
             ".catch(() => {{"
-            "document.getElementById('secret-btn-{uid}').classList.add('md-button--secondary');"
+            "this.classList.add('md-button--secondary');"
             "}})"
-        ).format(cat=input_category, key=input_key, prop=input_property, uid=uid)
+        ).format(cat=input_category, key=input_key, prop=input_property)
         icon = (
             '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"'
             ' fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
@@ -52,6 +48,5 @@ def define_env(env):
             '</svg>'
         )
         return (
-            '<span id="secret-label-{uid}"></span>'
-            ' <button class="md-button" id="secret-btn-{uid}" onclick="{js}"><p>{icon}</p></button>'
-        ).format(uid=uid, js=js, icon=icon)
+            '<button class="md-button" onclick="{js}"><p>{icon}</p></button>'
+        ).format(js=js, icon=icon)

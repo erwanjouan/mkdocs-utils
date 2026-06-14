@@ -40,7 +40,8 @@ async function copySecret(category, name, property, buttonEl) {
 }
 
 // Returns the value at the given dot-separated key, copies it to clipboard, or throws on error.
-async function getAndCopySecret(category, name, property) {
+// If buttonEl is provided, it is replaced by a <span> containing the value on success.
+async function getAndCopySecret(category, name, property, buttonEl) {
     let res;
     try {
         res = await fetch(`${SECRETS_API}/api/get?${getParams(category, name, property)}`);
@@ -49,6 +50,11 @@ async function getAndCopySecret(category, name, property) {
     }
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+    if (buttonEl) {
+        const span = document.createElement("span");
+        span.textContent = body.value;
+        buttonEl.replaceWith(span);
+    }
     _showToast("Copied ✔");
     return body.value;
 }
