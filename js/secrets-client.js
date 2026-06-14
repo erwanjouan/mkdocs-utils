@@ -41,8 +41,12 @@ async function copySecret(category, name, property, buttonEl) {
 
 // Returns the value at the given dot-separated key, copies it to clipboard, or throws on error.
 async function getAndCopySecret(category, name, property) {
-    const url = `${SECRETS_API}/api/get?${getParams(category, name, property)}`;
-    const res = await fetch(url);
+    let res;
+    try {
+        res = await fetch(`${SECRETS_API}/api/get?${getParams(category, name, property)}`);
+    } catch {
+        throw new Error("coffre-fort unreachable (ERR_CONNECTION_REFUSED)");
+    }
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
     _showToast("Copied ✔");
