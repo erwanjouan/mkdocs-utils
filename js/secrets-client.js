@@ -19,8 +19,8 @@ function _showToast(message) {
         pointerEvents: "none",
     });
     document.body.appendChild(toast);
-    setTimeout(() => { toast.style.opacity = "0"; }, 1800);
-    setTimeout(() => { toast.remove(); }, 2200);
+    setTimeout(() => { toast.style.opacity = "0"; }, 800);
+    setTimeout(() => { toast.remove(); }, 1200);
 }
 
 // key: dot-separated path into the secrets YAML (e.g. "tech-notes.awsaccount2user.mot de passe")
