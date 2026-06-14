@@ -26,3 +26,22 @@ def define_env(env):
              ( <a onclick="copySecret(\'{input_category}\', \'{input_key}\', \'login\', this)">login</a>
              : <a onclick="copySecret(\'{input_category}\', \'{input_key}\', \'password\', this)">password</a> )
              '''.format(input_category=input_category, input_key=input_key)
+
+    @env.macro
+    def secret_field(input_category, input_key, input_property='password'):
+        uid = '{}-{}-{}'.format(
+            input_category.replace(' ', '_'),
+            input_key.replace(' ', '_'),
+            input_property.replace(' ', '_'),
+        )
+        js = (
+            "getAndCopySecret('{cat}', '{key}', '{prop}')"
+            ".then(v => {{"
+            "document.getElementById('secret-label-{uid}').textContent = v;"
+            "document.getElementById('secret-btn-{uid}').disabled = true;"
+            "}})"
+        ).format(cat=input_category, key=input_key, prop=input_property, uid=uid)
+        return (
+            '<span id="secret-label-{uid}">******</span>'
+            ' <button id="secret-btn-{uid}" onclick="{js}">&#11015;</button>'
+        ).format(uid=uid, js=js)
