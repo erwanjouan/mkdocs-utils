@@ -13,9 +13,9 @@ def define_env(env):
         target_path = os.path.join(rel_parent_path, rootdir)
         for subdir, dirs, files in os.walk(target_path, topdown=False):
             for file in sorted(files):
-                file_path = '../'+ rootdir + '/' + file
+                file_path = rootdir + '/' + file
                 HTML += '\t<li>\n'
-                HTML += '\t<a href="{}" target="_blank">{}</a>\n'.format(file_path,file)
+                HTML += '\t<a href="{file_path}" target="_blank">{file}</a>\n'.format(file_path=file_path,file=file)
                 HTML += '\t</li>\n'
         HTML += '</ul>\n'
         return HTML
