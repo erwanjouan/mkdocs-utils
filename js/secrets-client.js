@@ -34,7 +34,7 @@ async function copySecret(category, name, property, buttonEl) {
         }
         _showToast("Copied ✔");
     } catch (err) {
-        alert(`[coffre-fort] copySecret failed: ${err.message}`);
+        _showToast("Something is missing ?");
         console.error("[secrets] copySecret failed:", err.message);
     }
 }
@@ -46,7 +46,8 @@ async function getAndCopySecret(category, name, property, buttonEl) {
     try {
         res = await fetch(`${SECRETS_API}/api/get?${getParams(category, name, property)}`);
     } catch {
-        throw new Error("coffre-fort unreachable (ERR_CONNECTION_REFUSED)");
+        _showToast("Something is missing ?");
+        throw new Error("(ERR_CONNECTION_REFUSED)");
     }
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
@@ -67,7 +68,7 @@ async function openPage(event, category, name, property) {
             window.open(url, '_blank');
         }
     } catch (err) {
-        alert(`[coffre-fort] openPage failed: ${err.message}`);
+        _showToast("Something is missing ?");
         console.error("[secrets] openPage failed:", err.message);
     }
 }
@@ -81,7 +82,7 @@ async function getValue(category, name, property, htmlElt) {
             await copySecret(category, name, property, null)
         }
     } catch (err) {
-        alert(`[coffre-fort] getValue failed: ${err.message}`);
+        _showToast("Something is missing ?");
         console.error("[secrets] getValue failed:", err.message);
     }
 }
