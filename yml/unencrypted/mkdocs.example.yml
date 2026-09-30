@@ -1,0 +1,39 @@
+theme:
+  name: material
+  palette:
+    scheme: slate
+  features:
+    - search.suggest
+    - navigation.tabs
+    - content.code.copy
+plugins:
+  - search
+  - mkdocs-video
+  - macros:
+      module_name: secrets/main
+      include_yaml:
+        - secrets/secrets.yml
+        - url_links.yml
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - mdx_truly_sane_lists
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
