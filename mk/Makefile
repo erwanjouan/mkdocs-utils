@@ -1,32 +1,41 @@
 GO_HTTP_SERVER:=docus-perso-mac
-BIN_FOLDER:=.venv/bin
+DOCKER_IMAGE:=mkdocs-base-image
+DOCKER_FILE_PATH:=docs/mkdocs-utils/docker/Dockerfile
 
 .ONESHELL:
 
-activate:
-	python3 -m venv .venv && \
-	source $(BIN_FOLDER)/activate
+docker-build:
+	docker build -t $(DOCKER_IMAGE) -f $(DOCKER_FILE_PATH) .
 
-install: activate
-	$(BIN_FOLDER)/python3 -m pip install -r ./docs/_utils/py/requirements.txt
+## serve: retrieve password from macOS Keychain, start mkdocs + coffre-fort via Docker Compose
+serve:
+	@COFFRE_FORT_PASSWORD="$$(security find-generic-password -s coffre-fort -a coffre-fort -w 2>/dev/null)" \
+	docker compose -f docs/mkdocs-utils/docker/docker-compose.yml up
 
-init: install
-	$(BIN_FOLDER)/python3 -m mkdocs new .
+## serve-mkdocs-only: start only the mkdocs container (no coffre-fort)
+serve-mkdocs-only:
+	docker run --rm \
+		-v $$(pwd):/docs \
+		-p 8000:8000 \
+		$(DOCKER_IMAGE) serve --dev-addr=0.0.0.0:8000
 
-serve: activate
-	$(BIN_FOLDER)/python3 -m mkdocs serve
+site-build:
+	docker run --rm \
+		-v $$(pwd):/docs \
+		$(DOCKER_IMAGE) build
 
-site-build: activate
-	$(BIN_FOLDER)/python3 -m mkdocs build
+jupyter:
+	docker run --rm -it \
+		--entrypoint jupyter \
+		-v $$(pwd):/docs \
+		-p 8888:8888 \
+		$(DOCKER_IMAGE) notebook --notebook-dir=docs
 
-run: site-build
-	docker run -v $$(pwd)/site:/usr/share/nginx/html:ro -p8080:80 nginx
-
-docker_build:
-	docker build -t some-content-nginx .
-
-docker_run: docker_build
-	docker run --name some-nginx -d -p 8080:80 some-content-nginx
+pptx-convert:
+	docker run --rm \
+		--entrypoint python \
+		-v $$(pwd):/docs \
+		$(DOCKER_IMAGE) docs/mkdocs-utils/py/pptx_to_reveal.py --root .
 
 go-build-intel-mac: site-build
 	mv site mkdocs-macros/go/ && \
@@ -40,6 +49,3 @@ go-build: site-build
 
 go-run: go-build
 	/mkdocs-macros/go/$(GO_HTTP_SERVER)-arm
-
-pptx-convert: activate
-	$(BIN_FOLDER)/python3 mkdocs-macros/pptx_to_reveal.py --root .

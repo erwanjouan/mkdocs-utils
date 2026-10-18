@@ -23,15 +23,30 @@ function _showToast(message) {
     setTimeout(() => { toast.remove(); }, 1200);
 }
 
+async function _copyToClipboard(text) {
+    if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+    } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand('copy'); } finally { ta.remove(); }
+    }
+}
+
 // key: dot-separated path into the secrets YAML (e.g. "tech-notes.awsaccount2user.mot de passe")
 async function copySecret(category, name, property, buttonEl) {
     try {
-        const url = `${SECRETS_API}/api/copy?${getParams(category, name, property)}`;
-        const res = await fetch(url);
+        const res = await fetch(`${SECRETS_API}/api/get?${getParams(category, name, property)}`);
         if (!res.ok) {
             const body = await res.json().catch(() => ({}));
             throw new Error(body.error || `HTTP ${res.status}`);
         }
+        const body = await res.json();
+        await _copyToClipboard(String(body.value));
         _showToast("Copied ✔");
     } catch (err) {
         _showToast("Something is missing ?");
