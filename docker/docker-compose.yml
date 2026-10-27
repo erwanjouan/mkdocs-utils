@@ -8,13 +8,3 @@ services:
     ports:
       - "8000:8000"
     command: serve --dev-addr=0.0.0.0:8000
-  coffre-fort:
-    build:
-      context: ../../../../../python/coffre-fort
-    environment:
-      COFFRE_FORT_PASSWORD: ${COFFRE_FORT_PASSWORD}
-    volumes:
-      - ../../../../../python/coffre-fort/secrets.yml.enc:/data/secrets.yml.enc
-      - ../../../../../python/coffre-fort/bak:/data/bak
-    ports:
-      - "9371:9371"
