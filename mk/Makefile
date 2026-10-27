@@ -8,16 +8,13 @@ docker-build:
 	docker build -t $(DOCKER_IMAGE) -f $(DOCKER_FILE_PATH) .
 
 ## serve: retrieve password from macOS Keychain, start mkdocs + coffre-fort via Docker Compose
-serve:
+serve-secrets:
 	@COFFRE_FORT_PASSWORD="$$(security find-generic-password -s coffre-fort -a coffre-fort -w 2>/dev/null)" \
-	docker compose -f docs/mkdocs-utils/docker/docker-compose.yml up
+	docker compose -f docs/mkdocs-utils/docker/docker-compose-secrets.yml up
 
 ## serve-mkdocs-only: start only the mkdocs container (no coffre-fort)
-serve-mkdocs-only:
-	docker run --rm \
-		-v $$(pwd):/docs \
-		-p 8000:8000 \
-		$(DOCKER_IMAGE) serve --dev-addr=0.0.0.0:8000
+serve-no-secrets:
+	docker compose -f docs/mkdocs-utils/docker/docker-compose.yml up
 
 site-build:
 	docker run --rm \
