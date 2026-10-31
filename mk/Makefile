@@ -1,5 +1,5 @@
 GO_HTTP_SERVER:=docus-perso-mac
-DOCKER_IMAGE:=mkdocs-golden:9.6.14
+DOCKER_IMAGE:=rone56/mkdocs-golden:9.6.14
 DOCKER_FILE_PATH:=docs/mkdocs-utils/docker/Dockerfile
 
 .ONESHELL:
