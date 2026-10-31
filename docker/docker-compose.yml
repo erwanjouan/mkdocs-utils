@@ -1,6 +1,6 @@
 services:
   mkdocs:
-    image: rone56/mkdocs-golden:1.0.2
+    image: rone56/mkdocs-golden:1.0.3
     volumes:
       - ${PWD}:/docs
     ports:
