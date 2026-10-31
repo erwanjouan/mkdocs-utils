@@ -1,0 +1,61 @@
+site_name: Mkdocs - parent
+
+extra_javascript:
+  - mkdocs-utils/js/mermaid.min.js
+  - mkdocs-utils/js/secrets-client.js
+theme:
+  name: material
+  palette:
+    scheme: slate
+  features:
+    - search.suggest
+    - navigation.tabs
+    - content.code.copy
+    - navigation.footer
+plugins:
+  - search
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      slide_effect: slide
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+      skip_classes:
+        - custom-skip-class-name
+      auto_themed: false
+      auto_caption: false
+      caption_position: bottom
+      background: white
+      shadow: true
+      manual: false
+  - mkdocs-jupyter:
+      include: ["*.ipynb"]
+  - mkdocs-video # Usage in md: ![type:video](https://www.youtube.com/embed/1OChlDQIKqA)
+  - macros:
+      module_name: docs/mkdocs-utils/py/macros
+      verbose: true
+use_directory_urls: false
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.critic # https://squidfunk.github.io/mkdocs-material/reference/formatting/
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - mdx_truly_sane_lists
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition # https://squidfunk.github.io/mkdocs-material/reference/admonitions/
+  - pymdownx.details
+  - pymdownx.tabbed: # https://squidfunk.github.io/mkdocs-material/reference/content-tabs/#anchor-links-open-me-in-a-new-tab-
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
