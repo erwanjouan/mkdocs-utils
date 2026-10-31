@@ -46,7 +46,7 @@ jobs:
           current="${{ steps.version.outputs.current }}"
           new="${{ steps.version.outputs.new }}"
           sed -i "s/^DOCKER_IMAGE_VERSION:=.*/DOCKER_IMAGE_VERSION:=$new/" Makefile
-          find docker -name '*.yml' -exec sed -i "s/mkdocs-golden:$current/mkdocs-golden:$new/g" {} +
+          find docker -name '*.yml' -exec sed -i "s|rone56/mkdocs-golden:$current|rone56/mkdocs-golden:$new|g" {} +
 
       - name: Commit and push tag
         run: |
@@ -72,5 +72,5 @@ jobs:
           build-args: |
             MKDOCS_VERSION=${{ steps.version.outputs.mkdocs_version }}
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/mkdocs-golden:${{ steps.version.outputs.new }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/mkdocs-golden:latest
+            rone56/mkdocs-golden:${{ steps.version.outputs.new }}
+            rone56/mkdocs-golden:latest
